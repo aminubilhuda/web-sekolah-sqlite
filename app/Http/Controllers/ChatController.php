@@ -43,6 +43,23 @@ class ChatController extends Controller
         }
 
         try {
+            // Ambil riwayat chat terakhir (5 pesan terakhir)
+            $chatHistory = Chat::where('session_id', $request->session_id)
+                             ->orderBy('created_at', 'desc')
+                             ->take(5)
+                             ->get()
+                             ->reverse();
+
+            // Format riwayat chat
+            $chatContext = "";
+            foreach ($chatHistory as $history) {
+                $role = $history->is_from_user ? "User" : "Assistant";
+                $chatContext .= "{$role}: {$history->message}\n";
+                if ($history->response) {
+                    $chatContext .= "Assistant: {$history->response}\n";
+                }
+            }
+
             // Ambil data dari berbagai tabel untuk konteks
             $sekolah = Sekolah::first();
             $jurusan = Jurusan::all();
@@ -102,8 +119,31 @@ class ChatController extends Controller
                 $context .= "Beberapa siswa terbaru: " . $siswa->pluck('nama_siswa')->join(', ') . ". ";
             }
 
+            // Instruksi format untuk Gemini
+            $formatInstructions = "\n\nBerikan jawaban dengan format berikut:\n" .
+                "1. Analisis gaya bahasa dan emosi pengguna:\n" .
+                "   - Jika pengguna menggunakan bahasa formal, jawab dengan formal\n" .
+                "   - Jika pengguna menggunakan bahasa gaul/gen Z, jawab dengan bahasa yang sama\n" .
+                "   - Jika pengguna menggunakan emoji, gunakan emoji yang sesuai\n" .
+                "   - Jika pengguna menggunakan singkatan, sesuaikan gaya bahasanya\n" .
+                "   - Jika pengguna menggunakan bahasa santai, jawab dengan santai\n\n" .
+                "2. Untuk curhat atau masalah pribadi:\n" .
+                "   - Tunjukkan empati sesuai dengan emosi pengguna\n" .
+                "   - Gunakan bahasa yang sesuai dengan gaya pengguna\n" .
+                "   - Berikan saran dengan cara yang tidak menggurui\n" .
+                "   - Hindari bahasa yang terlalu formal atau kaku\n" .
+                "   - Gunakan kata-kata yang familiar dengan pengguna\n\n" .
+                "3. Untuk informasi sekolah:\n" .
+                "   - Sesuaikan gaya bahasa dengan pengguna\n" .
+                "   - Tetap informatif tapi tidak kaku\n" .
+                "   - Gunakan format yang mudah dibaca\n" .
+                "   - Tambahkan emoji yang sesuai\n\n" .
+                "4. Selalu pertahankan konteks percakapan\n" .
+                "5. Sesuaikan panjang jawaban dengan konteks\n" .
+                "6. Gunakan bahasa yang natural dan mengalir\n\n";
+
             // Buat prompt untuk Gemini
-            $prompt = $context . "\n\nBerikan jawaban yang informatif dan membantu untuk pertanyaan berikut: " . $request->message;
+            $prompt = $context . $formatInstructions . "Riwayat percakapan:\n" . $chatContext . "\nPertanyaan terbaru: " . $request->message;
 
             // Kirim request ke Gemini API
             $response = Http::withHeaders([
