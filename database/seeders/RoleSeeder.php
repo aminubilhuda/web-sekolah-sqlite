@@ -24,6 +24,7 @@ class RoleSeeder extends Seeder
             'view_roles', 'create_roles', 'edit_roles', 'delete_roles',
             'view_permissions', 'create_permissions', 'edit_permissions', 'delete_permissions',
             'view_sekolahs', 'create_sekolahs', 'edit_sekolahs', 'delete_sekolahs',
+            'view_settings', 'create_settings', 'edit_settings', 'delete_settings',
             'view_jurusans', 'create_jurusans', 'edit_jurusans', 'delete_jurusans',
             'view_kelas', 'create_kelas', 'edit_kelas', 'delete_kelas',
             'view_ptks', 'create_ptks', 'edit_ptks', 'delete_ptks',

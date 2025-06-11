@@ -52,6 +52,12 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit_sekolahs']);
         Permission::firstOrCreate(['name' => 'delete_sekolahs']);
 
+        // Settings Management
+        Permission::firstOrCreate(['name' => 'view_settings']);
+        Permission::firstOrCreate(['name' => 'create_settings']);
+        Permission::firstOrCreate(['name' => 'edit_settings']);
+        Permission::firstOrCreate(['name' => 'delete_settings']);
+
 
         // Jurusan Management
         Permission::firstOrCreate(['name' => 'view_jurusans']);

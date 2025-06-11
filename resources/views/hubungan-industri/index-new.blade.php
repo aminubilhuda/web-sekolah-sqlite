@@ -244,6 +244,99 @@
         </div>
     </section>
 
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Testimonial</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Apa kata mitra industri dan alumni tentang program hubungan industri kami
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                        <div>
+                            <h4 class="font-semibold">Budi Santoso</h4>
+                            <p class="text-sm text-gray-500">HR Manager, PT. Teknologi Nusantara</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">
+                        "Siswa magang dari SMK Abdi Negara Tuban memiliki keterampilan teknis yang sangat baik dan etos
+                        kerja yang tinggi. Kami sangat puas dengan kerjasama ini."
+                    </p>
+                    <div class="flex text-yellow-400 mt-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                        <div>
+                            <h4 class="font-semibold">Siti Rahayu</h4>
+                            <p class="text-sm text-gray-500">Recruitment Supervisor, PT. Maju Jaya Industries</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">
+                        "Kami sangat terkesan dengan kemampuan adaptasi dan keterampilan teknis siswa. Mereka cepat belajar
+                        dan siap berkontribusi dalam tim kerja kami."
+                    </p>
+                    <div class="flex text-yellow-400 mt-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                        <div>
+                            <h4 class="font-semibold">Ahmad Firdaus</h4>
+                            <p class="text-sm text-gray-500">L&D Manager, Bank Digital Indonesia</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">
+                        "Program magang ini sangat membantu kami dalam mengidentifikasi talenta muda yang berkualitas.
+                        Beberapa peserta magang kini menjadi karyawan tetap kami."
+                    </p>
+                    <div class="flex text-yellow-400 mt-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Jadilah Mitra Industri Kami</h2>
+            <p class="text-white text-lg max-w-2xl mx-auto mb-8">
+                Dapatkan akses ke calon tenaga kerja terampil yang siap berkontribusi untuk perusahaan Anda.
+            </p>
+            <button
+                class="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-8 rounded-lg text-lg transition duration-300">
+                Ajukan Kerjasama Sekarang
+            </button>
+        </div>
+    </section>
 @endsection
 
 @push('scripts')

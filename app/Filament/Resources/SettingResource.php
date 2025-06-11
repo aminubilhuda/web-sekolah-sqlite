@@ -153,4 +153,24 @@ class SettingResource extends Resource
             'edit' => Pages\EditSetting::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_settings');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->can('create_settings');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->can('edit_settings');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->can('delete_settings');
+    }
 }

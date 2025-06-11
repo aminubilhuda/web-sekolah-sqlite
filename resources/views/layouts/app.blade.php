@@ -3,17 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>{{ $sekolah_aktif ? $sekolah_aktif->nama_sekolah : 'Sekolah' }}</title>
-    @if($sekolah_aktif && $sekolah_aktif->icon_sekolah)
-    <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $sekolah_aktif->icon_sekolah) }}">
+    @if ($sekolah_aktif && $sekolah_aktif->icon_sekolah)
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $sekolah_aktif->icon_sekolah) }}">
     @endif
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
@@ -248,6 +249,85 @@
                 height: 400px;
             }
         }
+
+        /* Mobile Chat Widget Styles */
+        @media (max-width: 640px) {
+
+            /* Prevent zoom on input focus on iOS Safari */
+            input[type="text"],
+            input[type="email"],
+            input[type="search"],
+            textarea {
+                font-size: 16px !important;
+            }
+
+            /* Mobile chat window improvements */
+            .mobile-chat-window {
+                border-radius: 1rem !important;
+                margin-bottom: 0.5rem !important;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            }
+
+            /* Safe area padding for devices with notch and better spacing */
+            .chat-widget-mobile {
+                padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem) !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                padding-top: 1rem !important;
+                background: #ffffff !important;
+            }
+
+            /* Mobile input styling */
+            .chat-widget-mobile input[type="text"] {
+                border-radius: 0.75rem !important;
+                border: 1px solid #e5e7eb !important;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+                padding: 0.75rem 1rem !important;
+                font-size: 16px !important;
+            }
+
+            /* Mobile button styling */
+            .chat-widget-mobile button[type="submit"] {
+                border-radius: 0.75rem !important;
+                min-width: 48px !important;
+                min-height: 48px !important;
+                padding: 0.75rem !important;
+                box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3) !important;
+            }
+
+            /* Smooth scrolling enhancement */
+            .chat-container {
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+        }
+
+        /* Desktop Chat Widget Styles */
+        @media (min-width: 641px) {
+
+            /* Desktop chat input size - normal size */
+            .chat-widget-mobile input[type="text"] {
+                font-size: 1rem !important;
+            }
+        }
+
+        /* Custom scrollbar for chat messages */
+        .chat-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .chat-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+
+        .chat-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 
@@ -256,7 +336,7 @@
     @include('layouts.header')
 
     @yield('content')
-    
+
     @include('layouts.footer')
     @include('components.chat-widget')
 
@@ -300,21 +380,21 @@
 
             // Event handlers
             on: {
-                init: function () {
+                init: function() {
                     console.log('Hero Swiper initialized with full image display');
                     // Re-initialize Lucide icons after swiper init
                     setTimeout(() => {
                         lucide.createIcons();
                     }, 100);
                 },
-                slideChange: function () {
+                slideChange: function() {
                     console.log('Slide changed to:', this.activeIndex);
                     // Re-initialize Lucide icons on slide change
                     setTimeout(() => {
                         lucide.createIcons();
                     }, 100);
                 },
-                resize: function () {
+                resize: function() {
                     // Ensure proper sizing on window resize
                     this.update();
                 }
@@ -342,7 +422,7 @@
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {

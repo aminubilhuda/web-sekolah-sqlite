@@ -72,83 +72,225 @@ class ChatController extends Controller
             $hubunganIndustri = HubunganIndustri::all();
             $siswa = Siswa::latest()->take(5)->get();
 
-            // Buat konteks dari data yang ada
-            $context = "Kamu adalah asisten virtual untuk website sekolah. ";
+            // Buat konteks dari data yang ada (ringkas)
+            $context = "Kamu adalah asisten virtual ramah untuk website " . ($sekolah ? $sekolah->nama_sekolah : 'sekolah') . ". ";
             
+            // Informasi lengkap sekolah
             if ($sekolah) {
-                $context .= "Sekolah ini bernama {$sekolah->nama_sekolah}. ";
-                if ($sekolah->visi) $context .= "Visi sekolah: {$sekolah->visi}. ";
-                if ($sekolah->misi) $context .= "Misi sekolah: {$sekolah->misi}. ";
+                if ($sekolah->visi) {
+                    $context .= "Visi sekolah: " . strip_tags($sekolah->visi) . ". ";
+                }
+                if ($sekolah->misi) {
+                    $context .= "Misi sekolah: " . strip_tags($sekolah->misi) . ". ";
+                }
+                if ($sekolah->tahun_berdiri) {
+                    $context .= "Tahun berdiri: " . $sekolah->tahun_berdiri . ". ";
+                }
+                if ($sekolah->alamat_sekolah) {
+                    $context .= "Alamat: " . $sekolah->alamat_sekolah . ". ";
+                }
+                if ($sekolah->telepon_sekolah) {
+                    $context .= "Telepon: " . $sekolah->telepon_sekolah . ". ";
+                }
+                if ($sekolah->email_sekolah) {
+                    $context .= "Email: " . $sekolah->email_sekolah . ". ";
+                }
+                if ($sekolah->website_sekolah) {
+                    $context .= "Website: " . $sekolah->website_sekolah . ". ";
+                }
+                if ($sekolah->akreditasi) {
+                    $context .= "Akreditasi: " . $sekolah->akreditasi . ". ";
+                }
+                if ($sekolah->motto) {
+                    $context .= "Motto: " . $sekolah->motto . ". ";
+                }
+                if ($sekolah->jenis_sekolah) {
+                    $context .= "Jenis sekolah: " . $sekolah->jenis_sekolah . ". ";
+                }
+                if ($sekolah->npsn) {
+                    $context .= "NPSN: " . $sekolah->npsn . ". ";
+                }
+                if ($sekolah->sejarah) {
+                    $context .= "Sejarah: " . strip_tags($sekolah->sejarah) . ". ";
+                }
+                if ($sekolah->sambutan_kepala_sekolah) {
+                    $context .= "Sambutan kepala sekolah: " . strip_tags($sekolah->sambutan_kepala_sekolah) . ". ";
+                }
+                if ($sekolah->provinsi) {
+                    $context .= "Provinsi: " . $sekolah->provinsi . ". ";
+                }
+                if ($sekolah->kabupaten_kota) {
+                    $context .= "Kabupaten/Kota: " . $sekolah->kabupaten_kota . ". ";
+                }
+                if ($sekolah->kecamatan) {
+                    $context .= "Kecamatan: " . $sekolah->kecamatan . ". ";
+                }
             }
 
             if ($jurusan->isNotEmpty()) {
-                $context .= "Sekolah ini memiliki jurusan: " . $jurusan->pluck('nama_jurusan')->join(', ') . ". ";
-            }
-
-            if ($ekstrakurikuler->isNotEmpty()) {
-                $context .= "Ekstrakurikuler yang tersedia: " . $ekstrakurikuler->pluck('nama_ekstrakurikuler')->join(', ') . ". ";
+                $jurusanList = $jurusan->map(function($j) {
+                    return $j->nama_jurusan . ($j->kode_jurusan ? ' (' . $j->kode_jurusan . ')' : '');
+                })->join(', ');
+                $context .= "Jurusan tersedia ({$jurusan->count()} jurusan): " . $jurusanList . ". ";
+                
+                // Tambahan detail lengkap jurusan untuk pertanyaan spesifik
+                $context .= "\nDetail Lengkap Jurusan:\n";
+                foreach ($jurusan as $j) {
+                    $context .= "- {$j->nama_jurusan}";
+                    if ($j->kode_jurusan) {
+                        $context .= " (Kode: {$j->kode_jurusan})";
+                    }
+                    if ($j->kepala_jurusan) {
+                        $context .= " - Kepala Jurusan: {$j->kepala_jurusan}";
+                    }
+                    if ($j->jumlah_guru) {
+                        $context .= " - Jumlah Guru: {$j->jumlah_guru} orang";
+                    }
+                    if ($j->jumlah_siswa) {
+                        $context .= " - Jumlah Siswa: {$j->jumlah_siswa} orang";
+                    }
+                    if ($j->deskripsi_singkat) {
+                        $context .= " - Deskripsi Singkat: {$j->deskripsi_singkat}";
+                    }
+                    if ($j->deskripsi) {
+                        $cleanDesc = strip_tags($j->deskripsi);
+                        $cleanDesc = preg_replace('/\s+/', ' ', $cleanDesc);
+                        $context .= " - Deskripsi Lengkap: " . Str::limit($cleanDesc, 300);
+                    }
+                    $context .= "\n";
+                }
             }
 
             if ($berita->isNotEmpty()) {
-                $context .= "Berita terbaru: " . $berita->pluck('judul')->join(', ') . ". ";
+                $context .= "Berita terbaru: " . $berita->pluck('judul')->map(function($judul) {
+                    return Str::limit($judul, 50);
+                })->join(', ') . ". ";
             }
 
-            if ($alumni->isNotEmpty()) {
-                $context .= "Beberapa alumni terbaru: " . $alumni->pluck('nama')->join(', ') . ". ";
-            }
-
-            if ($fasilitas->isNotEmpty()) {
-                $context .= "Fasilitas yang tersedia: " . $fasilitas->pluck('nama_fasilitas')->join(', ') . ". ";
-            }
-
-            if ($ptk->isNotEmpty()) {
-                $context .= "Jumlah PTK: " . $ptk->count() . " orang. ";
-                $context .= "Beberapa PTK: " . $ptk->take(5)->pluck('nama_ptk')->join(', ') . ". ";
-            }
-
-            if ($kelas->isNotEmpty()) {
-                $context .= "Kelas yang tersedia: " . $kelas->pluck('nama_kelas')->join(', ') . ". ";
+            if ($ekstrakurikuler->isNotEmpty()) {
+                $context .= "Ekstrakurikuler: " . $ekstrakurikuler->pluck('nama_ekstrakurikuler')->join(', ') . ". ";
+                
+                // Tambahan detail ekstrakurikuler untuk pertanyaan spesifik
+                $context .= "\nDetail Ekstrakurikuler:\n";
+                foreach ($ekstrakurikuler as $ekskul) {
+                    $context .= "- {$ekskul->nama_ekstrakurikuler}";
+                    if ($ekskul->pembina) {
+                        $context .= " (Pembina/Pelatih: {$ekskul->pembina})";
+                    }
+                    if ($ekskul->hari_kegiatan) {
+                        $context .= " - Hari: {$ekskul->hari_kegiatan}";
+                    }
+                    if ($ekskul->jam_mulai && $ekskul->jam_selesai) {
+                        $jamMulai = $ekskul->jam_mulai instanceof \DateTime ? $ekskul->jam_mulai->format('H:i') : $ekskul->jam_mulai;
+                        $jamSelesai = $ekskul->jam_selesai instanceof \DateTime ? $ekskul->jam_selesai->format('H:i') : $ekskul->jam_selesai;
+                        $context .= " - Waktu: {$jamMulai}-{$jamSelesai}";
+                    }
+                    if ($ekskul->tempat_kegiatan) {
+                        $context .= " - Tempat: {$ekskul->tempat_kegiatan}";
+                    }
+                    if ($ekskul->deskripsi) {
+                        $context .= " - Deskripsi: " . strip_tags(Str::limit($ekskul->deskripsi, 200));
+                    }
+                    $context .= "\n";
+                }
             }
 
             if ($hubunganIndustri->isNotEmpty()) {
-                $context .= "Mitra industri: " . $hubunganIndustri->pluck('nama_perusahaan')->join(', ') . ". ";
+                $hubinList = $hubunganIndustri->map(function($hubin) {
+                    return $hubin->nama_perusahaan . ' (' . $hubin->bidang_usaha . ')';
+                })->join(', ');
+                $context .= "Mitra hubungan industri ({$hubunganIndustri->count()} perusahaan): " . $hubinList . ". ";
+                
+                // Tambahan detail lengkap hubungan industri
+                $context .= "\nDetail Mitra Industri:\n";
+                foreach ($hubunganIndustri as $hubin) {
+                    $context .= "- {$hubin->nama_perusahaan}";
+                    if ($hubin->bidang_usaha) {
+                        $context .= " (Bidang: {$hubin->bidang_usaha})";
+                    }
+                    if ($hubin->alamat) {
+                        $context .= " - Alamat: {$hubin->alamat}";
+                    }
+                    if ($hubin->telepon) {
+                        $context .= " - Telepon: {$hubin->telepon}";
+                    }
+                    if ($hubin->email) {
+                        $context .= " - Email: {$hubin->email}";
+                    }
+                    if ($hubin->website) {
+                        $context .= " - Website: {$hubin->website}";
+                    }
+                    if ($hubin->nama_pic) {
+                        $context .= " - PIC: {$hubin->nama_pic}";
+                        if ($hubin->jabatan_pic) {
+                            $context .= " ({$hubin->jabatan_pic})";
+                        }
+                    }
+                    if ($hubin->deskripsi) {
+                        $cleanDesc = strip_tags($hubin->deskripsi);
+                        $context .= " - Deskripsi: " . Str::limit($cleanDesc, 200);
+                    }
+                    $context .= "\n";
+                }
             }
-
-            if ($siswa->isNotEmpty()) {
-                $context .= "Jumlah siswa terdaftar: " . $siswa->count() . " orang. ";
-                $context .= "Beberapa siswa terbaru: " . $siswa->pluck('nama_siswa')->join(', ') . ". ";
-            }
-
-            // Instruksi format untuk Gemini
-            $formatInstructions = "\n\nBerikan jawaban dengan format berikut:\n" .
-                "1. Analisis gaya bahasa dan emosi pengguna:\n" .
-                "   - Jika pengguna menggunakan bahasa formal, jawab dengan formal\n" .
-                "   - Jika pengguna menggunakan bahasa gaul/gen Z, jawab dengan bahasa yang sama\n" .
-                "   - Jika pengguna menggunakan emoji, gunakan emoji yang sesuai\n" .
-                "   - Jika pengguna menggunakan singkatan, sesuaikan gaya bahasanya\n" .
-                "   - Jika pengguna menggunakan bahasa santai, jawab dengan santai\n\n" .
-                "2. Untuk curhat atau masalah pribadi:\n" .
-                "   - Tunjukkan empati sesuai dengan emosi pengguna\n" .
-                "   - Gunakan bahasa yang sesuai dengan gaya pengguna\n" .
-                "   - Berikan saran dengan cara yang tidak menggurui\n" .
-                "   - Hindari bahasa yang terlalu formal atau kaku\n" .
-                "   - Gunakan kata-kata yang familiar dengan pengguna\n\n" .
-                "3. Untuk informasi sekolah:\n" .
-                "   - Sesuaikan gaya bahasa dengan pengguna\n" .
-                "   - Tetap informatif tapi tidak kaku\n" .
-                "   - Gunakan format yang mudah dibaca\n" .
-                "   - Tambahkan emoji yang sesuai\n\n" .
-                "4. Selalu pertahankan konteks percakapan\n" .
-                "5. Sesuaikan panjang jawaban dengan konteks\n" .
-                "6. Gunakan bahasa yang natural dan mengalir\n\n";
+            $formatInstructions = "\n\nTUGAS: Kamu adalah asisten virtual sekolah yang ramah dan natural.\n\n" .
+                "ATURAN RESPONS:\n" .
+                "1. Sesuaikan gaya bahasa dengan user:\n" .
+                "   - Formal → respons formal\n" .
+                "   - Santai/gaul → respons santai\n" .
+                "   - Pakai emoji → balasan pakai emoji\n" .
+                "2. Untuk curhat: tunjukkan empati natural tanpa menggurui\n" .
+                "3. Untuk info sekolah: berikan informasi yang mudah dipahami\n" .
+                "4. JANGAN tampilkan analisis atau format terstruktur\n" .
+                "5. Berikan jawaban langsung dan natural\n" .
+                "6. Gunakan bahasa Indonesia yang mengalir\n" .
+                "7. Untuk pertanyaan tentang jurusan: sebutkan SEMUA jurusan yang tersedia\n" .
+                "8. Untuk pertanyaan tentang jurusan tertentu: berikan deskripsi lengkap dari detail jurusan\n" .
+                "9. JANGAN gunakan tanda *, -, atau bullet points - gunakan kalimat yang natural\n" .
+                "10. Untuk daftar: gunakan kata penghubung seperti 'ada', 'yaitu', 'antara lain'\n" .
+                "11. Untuk pertanyaan tentang sekolah (tahun berdiri, alamat, visi, misi, dll): berikan informasi berdasarkan data sekolah yang tersedia\n" .
+                "12. Gunakan nama sekolah yang benar sesuai data: " . ($sekolah ? $sekolah->nama_sekolah : 'sekolah') . "\n" .
+                "13. Untuk pertanyaan tentang ekstrakurikuler: berikan informasi lengkap termasuk pelatih/pembina, jadwal, tempat, dll\n\n";
 
             // Buat prompt untuk Gemini
-            $prompt = $context . $formatInstructions . "Riwayat percakapan:\n" . $chatContext . "\nPertanyaan terbaru: " . $request->message;
+            $prompt = $context . $formatInstructions . 
+                "CONTOH RESPONS YANG BAIK:\n" .
+                "User: 'hai'\n" .
+                "Assistant: 'Hai juga! Ada yang bisa kubantu? 😊'\n\n" .
+                "User: 'ada jurusan apa aja?'\n" .
+                "Assistant: 'Di sekolah kita ada [sebutkan SEMUA jurusan yang tersedia dengan kode jurusan]. Kamu tertarik yang mana? 😉'\n\n" .
+                "User: 'berita terbaru apa?'\n" .
+                "Assistant: 'Berita terbaru ada tentang [sebutkan dengan kalimat natural tanpa bullet points]. Ada yang mau kamu tau lebih detail? 😊'\n\n" .
+                "User: 'Akuntansi itu apa sih?'\n" .
+                "Assistant: 'Jurusan Akuntansi (AK) itu [jelaskan berdasarkan deskripsi lengkap dan fasilitas yang tersedia]. Kepala jurusannya [nama kepala jurusan]. Sekarang ada [jumlah siswa] siswa dan [jumlah guru] guru. Menarik kan? 😊'\n\n" .
+                "User: 'RPL belajar apa aja?'\n" .
+                "Assistant: 'Di Rekayasa Perangkat Lunak (RPL) kamu akan belajar [sebutkan materi berdasarkan deskripsi lengkap]. Jurusannya dipimpin sama [nama kepala jurusan]. Cocok buat yang suka coding! 💻😄'\n\n" .
+                "User: 'jurusan mana yang paling banyak siswanya?'\n" .
+                "Assistant: 'Dari data yang ada, jurusan [nama jurusan] punya siswa paling banyak yaitu [jumlah] orang. Disusul [jurusan lain] dengan [jumlah] orang. Kamu tertarik yang mana? 😊'\n\n" .
+                "User: 'sekolah ini berdiri tahun berapa?'\n" .
+                "Assistant: 'SMK Abdi Negara Tuban berdiri pada tahun " . ($sekolah && $sekolah->tahun_berdiri ? $sekolah->tahun_berdiri : '[tahun berdiri]') . ". Udah cukup lama ya! 😊'\n\n" .
+                "User: 'alamat sekolah dimana?'\n" .
+                "Assistant: 'Alamat sekolah di " . ($sekolah && $sekolah->alamat_sekolah ? $sekolah->alamat_sekolah : '[alamat sekolah]') . ". Kalau mau datang langsung, bisa kok! 😄'\n\n" .
+                "User: 'ekstrakurikuler apa aja?'\n" .
+                "Assistant: 'Ekstrakurikuler yang ada di sekolah kita antara lain [sebutkan SEMUA ekstrakurikuler yang tersedia]. Ada yang menarik buat kamu? 😊'\n\n" .
+                "User: 'pelatih futsal siapa?'\n" .
+                "Assistant: 'Pelatih Futsal kita adalah [sebutkan nama pembina/pelatih dari data yang tersedia]. Beliau yang ngajarin teknik-teknik keren futsal! 😄'\n\n" .
+                "User: 'ada kerjasama industri?'\n" .
+                "Assistant: 'Ada dong! Sekolah kita punya kerjasama dengan [sebutkan mitra industri yang tersedia]. Mereka suka nerima siswa magang dan bahkan rekrut lulusan kita! 😊'\n\n" .
+                "User: 'mitra industri apa aja?'\n" .
+                "Assistant: 'Mitra industri kita ada [sebutkan SEMUA nama perusahaan mitra dengan bidang usahanya]. Keren kan? Ada yang cocok buat jurusan kamu? 😄'\n\n" .
+                "User: 'bisa magang dimana?'\n" .
+                "Assistant: 'Kamu bisa magang di [sebutkan perusahaan mitra yang tersedia]. Biasanya untuk durasi 3-6 bulan. Mau tau lebih detail tentang salah satunya? 😊'\n\n" .
+                "User: 'makasih min'\n" .
+                "Assistant: 'Sama-sama! Senang bisa bantu 😄'\n\n" .
+                "RIWAYAT PERCAKAPAN:\n" . $chatContext . 
+                "\nPERTANYAAN TERBARU: " . $request->message . 
+                "\n\nJAWABAN (langsung tanpa analisis, tanpa bullet points):";
 
             // Kirim request ke Gemini API
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}", [
+            ])->timeout(60)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}", [
                 'contents' => [
                     ['parts' => [['text' => $prompt]]]
                 ]
@@ -166,9 +308,19 @@ class ChatController extends Controller
                     'message' => $aiResponse
                 ]);
             } else {
-                throw new \Exception('Gagal mendapatkan respons dari Gemini AI');
+                // Log error untuk debugging
+                \Log::error('Gemini API Error: ' . $response->status() . ' - ' . $response->body());
+                
+                throw new \Exception('Gagal mendapatkan respons dari Gemini AI: HTTP ' . $response->status());
             }
         } catch (\Exception $e) {
+            // Log error detail
+            \Log::error('Chat Error: ' . $e->getMessage(), [
+                'session_id' => $request->session_id,
+                'message' => $request->message,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return response()->json([
                 'error' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);

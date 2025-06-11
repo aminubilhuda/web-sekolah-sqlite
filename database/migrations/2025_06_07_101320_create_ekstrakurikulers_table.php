@@ -18,7 +18,6 @@ return new class extends Migration
             $table->time('jam_selesai')->nullable();
             $table->string('tempat_kegiatan')->nullable();
             $table->string('foto')->nullable();
-            $table->unsignedBigInteger('id_sekolah');
             $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->timestamps();
             $table->softDeletes();
