@@ -6,6 +6,7 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\HubunganIndustriController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
@@ -22,3 +23,7 @@ Route::get('/hubungan-industri', [HubunganIndustriController::class, 'index'])->
 
 // Route untuk Profile
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+
+// Route untuk Chat
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::get('/chat/history', [ChatController::class, 'getChatHistory'])->name('chat.history');
