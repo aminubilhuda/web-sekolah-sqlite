@@ -4,6 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat;
 use App\Models\Setting;
+use App\Models\Sekolah;
+use App\Models\Jurusan;
+use App\Models\Ekstrakurikuler;
+use App\Models\Berita;
+use App\Models\Alumni;
+use App\Models\Fasilitas;
+use App\Models\Ptk;
+use App\Models\Kelas;
+use App\Models\HubunganIndustri;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -33,14 +43,67 @@ class ChatController extends Controller
         }
 
         try {
-            // Ambil data sekolah untuk konteks
-            $sekolah = \App\Models\Sekolah::first();
-            $sekolahInfo = $sekolah ? "Sekolah ini bernama {$sekolah->nama_sekolah}. " : "";
+            // Ambil data dari berbagai tabel untuk konteks
+            $sekolah = Sekolah::first();
+            $jurusan = Jurusan::all();
+            $ekstrakurikuler = Ekstrakurikuler::all();
+            $berita = Berita::latest()->take(5)->get();
+            $alumni = Alumni::latest()->take(5)->get();
+            $fasilitas = Fasilitas::all();
+            $ptk = Ptk::all();
+            $kelas = Kelas::all();
+            $hubunganIndustri = HubunganIndustri::all();
+            $siswa = Siswa::latest()->take(5)->get();
+
+            // Buat konteks dari data yang ada
+            $context = "Kamu adalah asisten virtual untuk website sekolah. ";
             
+            if ($sekolah) {
+                $context .= "Sekolah ini bernama {$sekolah->nama_sekolah}. ";
+                if ($sekolah->visi) $context .= "Visi sekolah: {$sekolah->visi}. ";
+                if ($sekolah->misi) $context .= "Misi sekolah: {$sekolah->misi}. ";
+            }
+
+            if ($jurusan->isNotEmpty()) {
+                $context .= "Sekolah ini memiliki jurusan: " . $jurusan->pluck('nama_jurusan')->join(', ') . ". ";
+            }
+
+            if ($ekstrakurikuler->isNotEmpty()) {
+                $context .= "Ekstrakurikuler yang tersedia: " . $ekstrakurikuler->pluck('nama_ekstrakurikuler')->join(', ') . ". ";
+            }
+
+            if ($berita->isNotEmpty()) {
+                $context .= "Berita terbaru: " . $berita->pluck('judul')->join(', ') . ". ";
+            }
+
+            if ($alumni->isNotEmpty()) {
+                $context .= "Beberapa alumni terbaru: " . $alumni->pluck('nama')->join(', ') . ". ";
+            }
+
+            if ($fasilitas->isNotEmpty()) {
+                $context .= "Fasilitas yang tersedia: " . $fasilitas->pluck('nama_fasilitas')->join(', ') . ". ";
+            }
+
+            if ($ptk->isNotEmpty()) {
+                $context .= "Jumlah PTK: " . $ptk->count() . " orang. ";
+                $context .= "Beberapa PTK: " . $ptk->take(5)->pluck('nama_ptk')->join(', ') . ". ";
+            }
+
+            if ($kelas->isNotEmpty()) {
+                $context .= "Kelas yang tersedia: " . $kelas->pluck('nama_kelas')->join(', ') . ". ";
+            }
+
+            if ($hubunganIndustri->isNotEmpty()) {
+                $context .= "Mitra industri: " . $hubunganIndustri->pluck('nama_perusahaan')->join(', ') . ". ";
+            }
+
+            if ($siswa->isNotEmpty()) {
+                $context .= "Jumlah siswa terdaftar: " . $siswa->count() . " orang. ";
+                $context .= "Beberapa siswa terbaru: " . $siswa->pluck('nama_siswa')->join(', ') . ". ";
+            }
+
             // Buat prompt untuk Gemini
-            $prompt = "Kamu adalah asisten virtual untuk website sekolah. {$sekolahInfo} " .
-                     "Berikan jawaban yang informatif dan membantu untuk pertanyaan berikut: " .
-                     $request->message;
+            $prompt = $context . "\n\nBerikan jawaban yang informatif dan membantu untuk pertanyaan berikut: " . $request->message;
 
             // Kirim request ke Gemini API
             $response = Http::withHeaders([
