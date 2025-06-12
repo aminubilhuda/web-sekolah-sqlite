@@ -51,23 +51,6 @@ class Jurusan extends Model
         return $query->where('status', 'Aktif');
     }
 
-    // Relasi dengan kompetensi
-    public function kompetensi()
-    {
-        return $this->hasMany(Kompetensi::class, 'jurusan_id', 'id_jurusan');
-    }
-
-    // Relasi dengan fasilitas
-    public function fasilitas()
-    {
-        return $this->hasMany(Fasilitas::class, 'jurusan_id', 'id_jurusan');
-    }
-
-    // Relasi dengan prospek karir
-    public function prospek_karir()
-    {
-        return $this->hasMany(ProspekKarir::class, 'jurusan_id', 'id_jurusan');
-    }
 
     // Relasi dengan Kelas
     public function kelas()

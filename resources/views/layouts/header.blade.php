@@ -54,8 +54,8 @@
                             <a href="#" class="block px-4 py-2 {{ request()->is('infaq*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Infaq</a>
                         </div>
                     </div>
-                    <a href="#" class="{{ request()->is('alumni*') ? 'text-blue-600 font-medium' : 'text-gray-600' }} hover:text-blue-600 transition-colors">Alumni</a>
-                    <a href="#" class="{{ request()->is('kontak*') ? 'text-blue-600 font-medium' : 'text-gray-600' }} hover:text-blue-600 transition-colors">Kontak</a>
+                    <a href="/alumni" class="{{ request()->is('alumni*') ? 'text-blue-600 font-medium' : 'text-gray-600' }} hover:text-blue-600 transition-colors">Alumni</a>
+                    <a href="/kontak" class="{{ request()->is('kontak*') ? 'text-blue-600 font-medium' : 'text-gray-600' }} hover:text-blue-600 transition-colors">Kontak</a>
                 </nav>
 
                 <!-- Desktop Auth Buttons -->

@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('kabupaten_kota')->nullable();
             $table->string('kecamatan')->nullable();
             $table->string('desa_kelurahan')->nullable();
+            $table->text('google_maps')->nullable();
             $table->enum('jenis_sekolah', ['SMA', 'SMK', 'SLB']);
             $table->enum('status_aktif', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->timestamps();

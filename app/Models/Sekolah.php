@@ -41,6 +41,7 @@ class Sekolah extends Model
         'kabupaten_kota',
         'kecamatan',
         'desa_kelurahan',
+        'google_maps',
         'jenis_sekolah',
         'status_aktif',
     ];

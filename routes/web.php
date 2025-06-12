@@ -7,6 +7,8 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\HubunganIndustriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\KontakController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
@@ -27,3 +29,11 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 // Route untuk Chat
 Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 Route::get('/chat/history', [ChatController::class, 'getChatHistory'])->name('chat.history');
+
+// Route untuk Alumni
+Route::get('/alumni', [AlumniController::class, 'index'])->name('alumni.index');
+Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show');
+
+// Route untuk Kontak
+Route::get('/kontak', [KontakController::class, 'index'])->name('kontak.index');
+Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');

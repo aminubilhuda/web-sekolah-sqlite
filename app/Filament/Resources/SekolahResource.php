@@ -88,6 +88,9 @@ class SekolahResource extends Resource
                 ->label('Icon Sekolah'),
                 Forms\Components\Textarea::make('tujuan'),
                 Forms\Components\Textarea::make('motto'),
+                
+                Forms\Components\Textarea::make('google_maps')
+                    ->columnSpanFull(),
                 Forms\Components\Select::make('status_aktif')
                     ->options([
                         'Aktif' => 'Aktif',
