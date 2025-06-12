@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\KontakController;
+use App\Http\Controllers\InfaqController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
@@ -37,3 +38,6 @@ Route::get('/alumni/{id}', [AlumniController::class, 'show'])->name('alumni.show
 // Route untuk Kontak
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak.index');
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
+
+// Route untuk Infaq
+Route::get('/infaq', [InfaqController::class, 'index'])->name('infaq.index');

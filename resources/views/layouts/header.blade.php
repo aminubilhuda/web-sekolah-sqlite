@@ -51,7 +51,7 @@
                             <a href="/jurusan" class="block px-4 py-2 {{ request()->is('jurusan*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Jurusan</a>
                             <a href="/berita" class="block px-4 py-2 {{ request()->is('berita*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Berita</a>
                             <a href="#" class="block px-4 py-2 {{ request()->is('galeri*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Galeri</a>
-                            <a href="#" class="block px-4 py-2 {{ request()->is('infaq*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Infaq</a>
+                            <a href="/infaq" class="block px-4 py-2 {{ request()->is('infaq*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Infaq</a>
                         </div>
                     </div>
                     <a href="/alumni" class="{{ request()->is('alumni*') ? 'text-blue-600 font-medium' : 'text-gray-600' }} hover:text-blue-600 transition-colors">Alumni</a>

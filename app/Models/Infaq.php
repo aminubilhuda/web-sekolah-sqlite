@@ -9,19 +9,25 @@ class Infaq extends Model
 {
     use HasFactory;
 
+    protected $table = 'infaqs';
     protected $primaryKey = 'id_infaq';
-    public $incrementing = true;
+    public $timestamps = true;
 
     protected $fillable = [
         'id_kelas',
         'nama_penyetor',
         'tanggal',
         'jumlah',
-        'keterangan',
+        'keterangan'
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'jumlah' => 'decimal:2'
     ];
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
 }

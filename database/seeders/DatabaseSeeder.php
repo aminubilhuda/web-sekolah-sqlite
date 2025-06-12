@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             SiswaUserSeeder::class,
             BeritaSeeder::class,
             SettingSeeder::class,
+            PpdbInfoSeeder::class,
         ]);
     }
 }
