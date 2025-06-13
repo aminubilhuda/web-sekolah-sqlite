@@ -74,7 +74,7 @@ class PpdbController extends Controller
         $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'nisn' => 'required|string|unique:ppdbs,nisn',
-            'nik' => 'required|string|size:16|unique:ppdbs,nik',
+            'nik' => 'required|string|unique:ppdbs,nik',
             'jenis_kelamin' => 'required|in:L,P',
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
@@ -94,11 +94,11 @@ class PpdbController extends Controller
             'gelombang' => 'required|in:1,2,3',
             'jalur' => 'required|in:Reguler,Prestasi,Tidak Mampu',
             'prestasi' => 'nullable|string',
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'ijazah' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
-            'skhun' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
-            'kartu_keluarga' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
-            'akta_kelahiran' => 'required|mimes:pdf,jpeg,png,jpg|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'ijazah' => 'nullable|mimes:pdf,jpeg,png,jpg|max:2048',
+            'skhun' => 'nullable|mimes:pdf,jpeg,png,jpg|max:2048',
+            'kartu_keluarga' => 'nullable|mimes:pdf,jpeg,png,jpg|max:2048',
+            'akta_kelahiran' => 'nullable|mimes:pdf,jpeg,png,jpg|max:2048',
             'surat_prestasi' => 'nullable|mimes:pdf,jpeg,png,jpg|max:2048',
             'surat_tidak_mampu' => 'nullable|mimes:pdf,jpeg,png,jpg|max:2048',
         ], $messages);
@@ -111,19 +111,48 @@ class PpdbController extends Controller
             
             // Handle required files
             $fields = ['foto', 'ijazah', 'skhun', 'kartu_keluarga', 'akta_kelahiran'];
+            $uploadDebug = [];
             foreach ($fields as $field) {
                 if ($request->hasFile($field)) {
-                    $data[$field] = $request->file($field)->store('public/ppdb');
+                    $path = Storage::disk('public')->putFile('public/ppdb', $request->file($field));
+                    $data[$field] = 'public/ppdb/' . basename($path);
+                    $uploadDebug[$field] = $data[$field];
+                    $realPath = storage_path('app/public/public/ppdb/' . basename($path));
+                    if (!file_exists($realPath)) {
+                        return back()->withInput()->with('error', "File $field gagal di-upload ke $realPath");
+                    }
                 }
             }
-            
             // Handle optional files
+            // $optionalFields = ['surat_prestasi', 'surat_tidak_mampu'];
+            // foreach ($optionalFields as $field) {
+            //     if ($request->hasFile($field)) {
+            //         $path = Storage::disk('public')->putFile('ppdb', $request->file($field));
+            //         $data[$field] = 'public/ppdb/' . basename($path);
+            //         $uploadDebug[$field] = $data[$field];
+            //         $realPath = storage_path('app/public/ppdb/' . basename($path));
+            //         if (!file_exists($realPath)) {
+            //             return back()->withInput()->with('error', "File $field gagal di-upload ke $realPath");
+            //         }
+            //     }
+            // }
+
             $optionalFields = ['surat_prestasi', 'surat_tidak_mampu'];
             foreach ($optionalFields as $field) {
                 if ($request->hasFile($field)) {
-                    $data[$field] = $request->file($field)->store('public/ppdb');
+                    // Simpan ke storage/app/public/public/ppdb
+                    $path = Storage::disk('public')->putFile('public/ppdb', $request->file($field));
+                    
+                    $data[$field] = 'public/ppdb/' . basename($path);
+                    $uploadDebug[$field] = $data[$field];
+
+                    $realPath = storage_path('app/public/public/ppdb/' . basename($path));
+                    if (!file_exists($realPath)) {
+                        return back()->withInput()->with('error', "File $field gagal di-upload ke $realPath");
+                    }
                 }
             }
+
 
             // Create PPDB record
             $ppdb = Ppdb::create($data);
@@ -147,7 +176,6 @@ class PpdbController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
             // Delete uploaded files if any
             if (isset($data)) {
                 $fields = array_merge($fields, $optionalFields);
@@ -157,11 +185,11 @@ class PpdbController extends Controller
                     }
                 }
             }
-
+            // DEBUG: tampilkan pesan error asli
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
+                ->with('error', 'Error: ' . $e->getMessage());
         }
     }
 

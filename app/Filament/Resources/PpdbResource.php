@@ -66,13 +66,13 @@ class PpdbResource extends Resource
                 'Ditolak' => 'Ditolak',
                 'Cadangan' => 'Cadangan',
             ])->default('Menunggu'),
-            Forms\Components\FileUpload::make('foto')->label('Foto')->image()->directory('ppdb')->maxSize(2048),
-            Forms\Components\FileUpload::make('ijazah')->label('Ijazah')->directory('ppdb')->maxSize(2048),
-            Forms\Components\FileUpload::make('skhun')->label('SKHUN')->directory('ppdb')->maxSize(2048),
-            Forms\Components\FileUpload::make('kartu_keluarga')->label('Kartu Keluarga')->directory('ppdb')->maxSize(2048),
-            Forms\Components\FileUpload::make('akta_kelahiran')->label('Akta Kelahiran')->directory('ppdb')->maxSize(2048),
-            Forms\Components\FileUpload::make('surat_prestasi')->label('Surat Prestasi')->directory('ppdb')->maxSize(2048),
-            Forms\Components\FileUpload::make('surat_tidak_mampu')->label('Surat Tidak Mampu')->directory('ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('foto')->label('Foto')->image()->directory('public/ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('ijazah')->label('Ijazah')->directory('public/ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('skhun')->label('SKHUN')->directory('public/ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('kartu_keluarga')->label('Kartu Keluarga')->directory('public/ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('akta_kelahiran')->label('Akta Kelahiran')->directory('public/ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('surat_prestasi')->label('Surat Prestasi')->directory('public/ppdb')->maxSize(2048),
+            Forms\Components\FileUpload::make('surat_tidak_mampu')->label('Surat Tidak Mampu')->directory('public/ppdb')->maxSize(2048),
         ]);
     }
 

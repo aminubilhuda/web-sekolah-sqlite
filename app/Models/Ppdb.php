@@ -102,7 +102,16 @@ class Ppdb extends Model
         static::creating(function ($ppdb) {
             if (empty($ppdb->nomor_registrasi)) {
                 $tahun = date('Y');
-                $count = static::whereYear('created_at', $tahun)->count() + 1;
+                $last = static::withTrashed()
+                    ->whereYear('created_at', $tahun)
+                    ->where('nomor_registrasi', 'like', 'PPDB-' . $tahun . '-%')
+                    ->orderByDesc('nomor_registrasi')
+                    ->first();
+                if ($last && preg_match('/PPDB-' . $tahun . '-(\d{4})/', $last->nomor_registrasi, $m)) {
+                    $count = intval($m[1]) + 1;
+                } else {
+                    $count = 1;
+                }
                 $ppdb->nomor_registrasi = 'PPDB-' . $tahun . '-' . str_pad($count, 4, '0', STR_PAD_LEFT);
             }
         });
