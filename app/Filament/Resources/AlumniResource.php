@@ -156,7 +156,7 @@ class AlumniResource extends Resource
                             ]),
                         Forms\Components\FileUpload::make('foto')
                             ->image()
-                            ->directory('alumni')
+                            ->directory('public/alumni')
                             ->columnSpanFull(),
                     ]),
             ]);

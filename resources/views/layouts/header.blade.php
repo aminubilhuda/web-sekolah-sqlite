@@ -60,7 +60,7 @@
                         <a href="/berita"
                             class="block px-4 py-2 {{ request()->is('berita*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Berita</a>
                         <a href="/ppdb"
-                            class="block px-4 py-2 {{ request()->is('ppdb*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">PPDB</a>
+                            class="block px-4 py-2 {{ request()->is('ppdb*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}"> <b>PPDB (Siswa Baru)</b></a>
                         <a href="/galeri"
                             class="block px-4 py-2 {{ request()->is('galeri*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Galeri</a>
                         <a href="/infaq"
@@ -82,7 +82,7 @@
                 <a href="/ppdb"
                     class="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-full justify-center">
                     <i data-lucide="user-plus" class="w-4 h-4"></i>
-                    <span>PPDB</span>
+                    <span><b>PPDB (Siswa Baru)</b></span>
                 </a>
             </div>
 

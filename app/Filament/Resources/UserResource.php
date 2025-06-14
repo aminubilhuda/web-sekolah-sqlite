@@ -60,7 +60,7 @@ class UserResource extends Resource
                             ->searchable(),
                         Forms\Components\FileUpload::make('avatar')
                             ->image()
-                            ->directory('avatars')
+                            ->directory('public/avatars')
                             ->nullable(),
                         Forms\Components\Toggle::make('is_active')
                             ->label('Status Aktif')

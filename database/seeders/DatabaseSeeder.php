@@ -16,14 +16,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
-            PtkSeeder::class,
+            // PtkSeeder::class,
             PermissionSeeder::class,
             AdminSeeder::class,
             JurusanSeeder::class,
-            SiswaUserSeeder::class,
-            BeritaSeeder::class,
+            // SiswaUserSeeder::class,
+            // BeritaSeeder::class,
             SettingSeeder::class,
-            PpdbInfoSeeder::class,
+            // PpdbInfoSeeder::class,
         ]);
     }
 }

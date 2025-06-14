@@ -74,7 +74,7 @@ class SiswaResource extends Resource
                             ->nullable(),
                         Forms\Components\FileUpload::make('foto')
                             ->image()
-                            ->directory('siswa')
+                            ->directory('public/siswa')
                             ->nullable(),
                         Forms\Components\Select::make('id_jurusan')
                             ->label('Jurusan')

@@ -36,7 +36,7 @@ class GaleriResource extends Resource
                 ->label('Foto')
                 ->image()
                 ->multiple()
-                ->directory('galeri')
+                ->directory('public/galeri')
                 ->required(fn (Forms\Get $get) => $get('kategori') === 'foto')
                 ->visible(fn (Forms\Get $get) => $get('kategori') === 'foto'),
             Forms\Components\TextInput::make('url_video')
