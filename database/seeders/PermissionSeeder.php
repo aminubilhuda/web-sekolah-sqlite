@@ -137,7 +137,11 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit_galeris']);
         Permission::firstOrCreate(['name' => 'delete_galeris']);
 
-
+        // Chat Management
+        Permission::firstOrCreate(['name' => 'view_chats']);
+        Permission::firstOrCreate(['name' => 'create_chats']);
+        Permission::firstOrCreate(['name' => 'edit_chats']);
+        Permission::firstOrCreate(['name' => 'delete_chats']);
 
 
         // Create roles and assign permissions
