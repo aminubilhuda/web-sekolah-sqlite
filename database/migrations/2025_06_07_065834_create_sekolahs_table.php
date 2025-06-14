@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('foto_kepala_sekolah')->nullable();
             $table->text('tujuan')->nullable();
             $table->text('motto')->nullable();
+            $table->text('youtube_id')->nullable();
             $table->string('logo_sekolah')->nullable();
             $table->string('icon_sekolah')->nullable();
             $table->string('akreditasi')->nullable();

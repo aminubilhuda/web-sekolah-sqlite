@@ -107,6 +107,33 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit_hubins']);
         Permission::firstOrCreate(['name' => 'delete_hubins']);
 
+        // Alumni Management
+        Permission::firstOrCreate(['name' => 'view_alumnis']);
+        Permission::firstOrCreate(['name' => 'create_alumnis']);
+        Permission::firstOrCreate(['name' => 'edit_alumnis']);
+        Permission::firstOrCreate(['name' => 'delete_alumnis']);
+
+        // Kontak Management
+        Permission::firstOrCreate(['name' => 'view_kontaks']);
+        Permission::firstOrCreate(['name' => 'create_kontaks']);
+        Permission::firstOrCreate(['name' => 'edit_kontaks']);
+        Permission::firstOrCreate(['name' => 'delete_kontaks']);
+
+        // PPDB Management
+        Permission::firstOrCreate(['name' => 'view_ppdbs']);
+        Permission::firstOrCreate(['name' => 'create_ppdbs']);
+        Permission::firstOrCreate(['name' => 'edit_ppdbs']);
+        Permission::firstOrCreate(['name' => 'delete_ppdbs']);
+
+        // PPDB Info Management
+        Permission::firstOrCreate(['name' => 'view_ppdbinfos']);
+        Permission::firstOrCreate(['name' => 'create_ppdbinfos']);
+        Permission::firstOrCreate(['name' => 'edit_ppdbinfos']);
+        Permission::firstOrCreate(['name' => 'delete_ppdbinfos']);
+
+
+
+
         // Create roles and assign permissions
         $adminRole = Role::create(['name' => 'admin']);
         $adminRole->givePermissionTo(Permission::all());

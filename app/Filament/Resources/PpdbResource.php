@@ -156,4 +156,24 @@ class PpdbResource extends Resource
             'edit' => Pages\EditPpdb::route('/{record}/edit'),
         ];
     }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_ppdbs');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->can('create_ppdbs');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->can('edit_ppdbs');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->can('delete_ppdbs');
+    }
 }

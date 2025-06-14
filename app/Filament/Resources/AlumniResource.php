@@ -226,4 +226,24 @@ class AlumniResource extends Resource
             'edit' => Pages\EditAlumni::route('/{record}/edit'),
         ];
     }
-} 
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_alumnis');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->can('create_alumnis');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->can('edit_alumnis');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->can('delete_alumnis');
+    }
+}

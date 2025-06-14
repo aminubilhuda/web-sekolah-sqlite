@@ -489,6 +489,8 @@
             animationObserver.observe(el);
         });
     </script>
+
+    @stack('scripts')
 </body>
 
 </html>

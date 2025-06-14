@@ -27,6 +27,7 @@ class Sekolah extends Model
         'foto_kepala_sekolah',
         'tujuan',
         'motto',
+        'youtube_id',
         'logo_sekolah',
         'icon_sekolah',
         'akreditasi',

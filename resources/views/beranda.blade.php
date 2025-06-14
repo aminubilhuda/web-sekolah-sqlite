@@ -47,7 +47,7 @@
                             <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                         </a>
 
-                        <button
+                        <button id="tontonAcaraBtn"
                             class="flex items-center space-x-3 text-gray-700 hover:text-blue-600 transition-colors group">
                             <div
                                 class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center group-hover:bg-yellow-500 transition-colors">
@@ -253,8 +253,13 @@
                 <!-- Left Content - Principal Photo -->
                 <div class="relative" data-animation="fade-in-left" data-animation-duration="1s">
                     <div class="relative bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl overflow-hidden">
+                        @if ($sekolah_aktif && $sekolah_aktif->foto_kepala_sekolah)
+                            <img src="{{ asset('storage/' . $sekolah_aktif->foto_kepala_sekolah) }}"
+                                alt="Kepala Sekolah" class="w-full h-[400px] object-cover" />
+                        @else
                         <img src="https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=600"
                             alt="Kepala Sekolah" class="w-full h-[400px] object-cover" />
+                        @endif
                         <div
                             class="absolute top-6 right-6 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
                             <i data-lucide="quote" class="w-6 h-6 text-white"></i>
@@ -484,4 +489,35 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal YouTube -->
+    <div id="modalYoutube" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-4 max-w-lg w-full relative">
+            <button id="closeModalYoutube" class="absolute top-2 right-2 text-gray-500 hover:text-red-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="aspect-w-16 aspect-h-9">
+                @if ($sekolah_aktif && $sekolah_aktif->logo_sekolah)
+                <iframe id="youtubeFrame" width="100%" height="315" src="https://www.youtube.com/embed/{{ $sekolah_aktif->youtube_id }}?autoplay=1" title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                @else
+                <iframe id="youtubeFrame" width="100%" height="315" src="https://www.youtube.com/embed/GQL4Bx6mjhA?autoplay=1" title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        document.getElementById('tontonAcaraBtn').addEventListener('click', function() {
+            document.getElementById('modalYoutube').classList.remove('hidden');
+        });
+        document.getElementById('closeModalYoutube').addEventListener('click', function() {
+            document.getElementById('modalYoutube').classList.add('hidden');
+            // Stop video
+            document.getElementById('youtubeFrame').src = document.getElementById('youtubeFrame').src;
+        });
+    </script>
+    @endpush
 @endsection

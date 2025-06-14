@@ -140,4 +140,24 @@ class KontakResource extends Resource
     {
         return static::getModel()::where('status', 'Belum Dibaca')->count();
     }
-} 
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->can('view_kontaks');
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->can('create_kontaks');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->can('edit_kontaks');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->can('delete_kontaks');
+    }
+}
