@@ -14,6 +14,7 @@ use App\Models\Ptk;
 use App\Models\Kelas;
 use App\Models\HubunganIndustri;
 use App\Models\Siswa;
+use App\Models\PpdbInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -71,10 +72,34 @@ class ChatController extends Controller
             $kelas = Kelas::all();
             $hubunganIndustri = HubunganIndustri::all();
             $siswa = Siswa::latest()->take(5)->get();
+            $ppdbInfo = PpdbInfo::active()->ordered()->get();
 
             // Buat konteks dari data yang ada (ringkas)
             $context = "Kamu adalah asisten virtual ramah untuk website " . ($sekolah ? $sekolah->nama_sekolah : 'sekolah') . ". ";
             
+            // Informasi PPDB
+            if ($ppdbInfo->isNotEmpty()) {
+                $context .= "\nInformasi PPDB:\n";
+                foreach ($ppdbInfo as $info) {
+                    $context .= "- {$info->judul}:\n";
+                    if ($info->kategori === 'spp') {
+                        $konten = $info->konten;
+                        $context .= "  SPP: Rp " . number_format($konten['spp'], 0, ',', '.') . "\n";
+                        $context .= "  Makan: Rp " . number_format($konten['makan'], 0, ',', '.') . "\n";
+                        $context .= "  Ekstrakurikuler: Rp " . number_format($konten['ekstrakurikuler'], 0, ',', '.') . "\n";
+                        $context .= "  Total: Rp " . number_format($konten['total'], 0, ',', '.') . "\n";
+                    } else {
+                        if (is_array($info->konten)) {
+                            foreach ($info->konten as $item) {
+                                $context .= "  " . strip_tags($item) . "\n";
+                            }
+                        } else {
+                            $context .= "  " . strip_tags($info->konten) . "\n";
+                        }
+                    }
+                }
+            }
+
             // Informasi lengkap sekolah
             if ($sekolah) {
                 if ($sekolah->visi) {
@@ -281,6 +306,14 @@ class ChatController extends Controller
                 "Assistant: 'Mitra industri kita ada [sebutkan SEMUA nama perusahaan mitra dengan bidang usahanya]. Keren kan? Ada yang cocok buat jurusan kamu? 😄'\n\n" .
                 "User: 'bisa magang dimana?'\n" .
                 "Assistant: 'Kamu bisa magang di [sebutkan perusahaan mitra yang tersedia]. Biasanya untuk durasi 3-6 bulan. Mau tau lebih detail tentang salah satunya? 😊'\n\n" .
+                "User: 'info ppdb dong'\n" .
+                "Assistant: 'Untuk PPDB, kita punya beberapa gelombang pendaftaran. Gelombang 1 dimulai [tanggal] sampai [tanggal]. Biaya pendaftarannya Rp [jumlah]. Syaratnya antara lain [sebutkan syarat utama]. Mau tau lebih detail tentang [gelombang/biaya/syarat]? 😊'\n\n" .
+                "User: 'berapa biaya spp?'\n" .
+                "Assistant: 'Biaya SPP per bulan Rp [jumlah], ditambah biaya makan Rp [jumlah] dan ekstrakurikuler Rp [jumlah]. Total per bulan Rp [total]. Ada yang mau ditanyain lagi? 😊'\n\n" .
+                "User: 'kapan pendaftaran ppdb?'\n" .
+                "Assistant: 'Pendaftaran PPDB dibuka dalam beberapa gelombang. Gelombang 1 mulai [tanggal] sampai [tanggal], Gelombang 2 [tanggal] sampai [tanggal]. Buruan daftar ya, kuotanya terbatas! 😄'\n\n" .
+                "User: 'syarat pendaftaran ppdb apa aja?'\n" .
+                "Assistant: 'Syarat pendaftaran PPDB antara lain [sebutkan syarat-syarat utama]. Jangan lupa siapkan semua berkasnya ya! Ada yang mau ditanyain lagi? 😊'\n\n" .
                 "User: 'makasih min'\n" .
                 "Assistant: 'Sama-sama! Senang bisa bantu 😄'\n\n" .
                 "RIWAYAT PERCAKAPAN:\n" . $chatContext . 
