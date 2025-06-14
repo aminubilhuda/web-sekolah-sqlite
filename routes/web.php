@@ -11,6 +11,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\InfaqController;
 use App\Http\Controllers\PpdbController;
+use App\Http\Controllers\GaleriController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 
@@ -52,3 +53,6 @@ Route::prefix('ppdb')->name('ppdb.')->group(function () {
     Route::get('/status', [PpdbController::class, 'status'])->name('status');
     Route::post('/check-status', [PpdbController::class, 'checkStatus'])->name('check-status');
 });
+
+// Route untuk Galeri
+Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');

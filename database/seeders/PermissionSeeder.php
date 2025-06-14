@@ -131,6 +131,12 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit_ppdbinfos']);
         Permission::firstOrCreate(['name' => 'delete_ppdbinfos']);
 
+        // Galeri Management
+        Permission::firstOrCreate(['name' => 'view_galeris']);
+        Permission::firstOrCreate(['name' => 'create_galeris']);
+        Permission::firstOrCreate(['name' => 'edit_galeris']);
+        Permission::firstOrCreate(['name' => 'delete_galeris']);
+
 
 
 

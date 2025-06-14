@@ -61,7 +61,7 @@
                             class="block px-4 py-2 {{ request()->is('berita*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Berita</a>
                         <a href="/ppdb"
                             class="block px-4 py-2 {{ request()->is('ppdb*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">PPDB</a>
-                        <a href="#"
+                        <a href="/galeri"
                             class="block px-4 py-2 {{ request()->is('galeri*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Galeri</a>
                         <a href="/infaq"
                             class="block px-4 py-2 {{ request()->is('infaq*') ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-blue-50' }}">Infaq</a>

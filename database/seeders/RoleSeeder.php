@@ -35,6 +35,11 @@ class RoleSeeder extends Seeder
             'view_hubins', 'create_hubins', 'edit_hubins', 'delete_hubins',
             'view_infaqs', 'create_infaqs', 'edit_infaqs', 'delete_infaqs',
             'view_sliders', 'create_sliders', 'edit_sliders', 'delete_sliders',
+            'view_galeris', 'create_galeris', 'edit_galeris', 'delete_galeris',
+            'view_kontaks', 'create_kontaks', 'edit_kontaks', 'delete_kontaks',
+            'view_ppdbs', 'create_ppdbs', 'edit_ppdbs', 'delete_ppdbs',
+            'view_ppdbinfos', 'create_ppdbinfos', 'edit_ppdbinfos', 'delete_ppdbinfos',
+            'view_alumnis', 'create_alumnis', 'edit_alumnis', 'delete_alumnis',
         ]);
 
         $guru->givePermissionTo([
