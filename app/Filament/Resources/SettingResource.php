@@ -79,8 +79,11 @@ class SettingResource extends Resource
                                 } elseif ($key === 'fontte_api_key') {
                                     try {
                                         $response = Http::withHeaders([
-                                            'Authorization' => 'Bearer ' . $value,
-                                        ])->get('https://api.fontte.com/v1/fonts');
+                                            'Authorization' => $value,
+                                        ])->post('https://api.fonnte.com/send', [
+                                            'target' => '6285707357080',
+                                            'message' => 'Test koneksi Fonnte API - ' . now()->format('Y-m-d H:i:s')
+                                        ]);
 
                                         if ($response->successful()) {
                                             Notification::make()
@@ -90,7 +93,7 @@ class SettingResource extends Resource
                                         } else {
                                             Notification::make()
                                                 ->title('Koneksi Gagal')
-                                                ->body('API Key tidak valid atau terjadi kesalahan')
+                                                ->body('API Key tidak valid atau terjadi kesalahan: ' . $response->body())
                                                 ->danger()
                                                 ->send();
                                         }

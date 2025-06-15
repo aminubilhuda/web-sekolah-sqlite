@@ -66,69 +66,27 @@
                         <div class="hero-image-container">
                             <div class="swiper heroSwiper h-full">
                                 <div class="swiper-wrapper">
-                                    <!-- Slide 1 -->
+                                    @foreach(\App\Models\Slider::where('status', 'Aktif')->orderBy('urutan')->get() as $slider)
                                     <div class="swiper-slide">
-                                        <img src="https://images.pexels.com/photos/1820559/pexels-photo-1820559.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800"
-                                            alt="Siswa bahagia sedang belajar" class="w-full h-full object-cover" />
-                                        <!-- Overlay Content -->
-                                        <div class="absolute bottom-6 left-6 right-6 z-10">
-                                            <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 text-white">
-                                                <p class="text-sm leading-relaxed">
-                                                    Pendidikan berkualitas tinggi dengan fasilitas modern dan tenaga
-                                                    pengajar
-                                                    berpengalaman untuk masa depan yang gemilang.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Slide 2 -->
-                                    <div class="swiper-slide">
-                                        <img src="https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800"
-                                            alt="Laboratorium modern dengan peralatan canggih"
+                                        <img src="{{ asset('storage/' . $slider->gambar) }}" 
+                                            alt="{{ $slider->judul }}" 
                                             class="w-full h-full object-cover" />
                                         <!-- Overlay Content -->
                                         <div class="absolute bottom-6 left-6 right-6 z-10">
                                             <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 text-white">
+                                                <h3 class="text-lg font-semibold mb-2">{{ $slider->judul }}</h3>
                                                 <p class="text-sm leading-relaxed">
-                                                    Fasilitas laboratorium modern dengan peralatan canggih untuk
-                                                    mendukung
-                                                    pembelajaran praktis dan eksperimen.
+                                                    {{ $slider->deskripsi }}
                                                 </p>
+                                                @if($slider->link)
+                                                <a href="{{ $slider->link }}" class="inline-block mt-3 text-sm font-medium text-white hover:text-blue-200">
+                                                    Selengkapnya →
+                                                </a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Slide 3 -->
-                                    <div class="swiper-slide">
-                                        <img src="https://images.pexels.com/photos/1181534/pexels-photo-1181534.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800"
-                                            alt="Kegiatan ekstrakurikuler siswa" class="w-full h-full object-cover" />
-                                        <!-- Overlay Content -->
-                                        <div class="absolute bottom-6 left-6 right-6 z-10">
-                                            <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 text-white">
-                                                <p class="text-sm leading-relaxed">
-                                                    Beragam kegiatan ekstrakurikuler untuk mengembangkan bakat dan minat
-                                                    siswa di berbagai bidang.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Slide 4 -->
-                                    <div class="swiper-slide">
-                                        <img src="https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800"
-                                            alt="Perpustakaan modern dengan koleksi lengkap"
-                                            class="w-full h-full object-cover" />
-                                        <!-- Overlay Content -->
-                                        <div class="absolute bottom-6 left-6 right-6 z-10">
-                                            <div class="bg-black/20 backdrop-blur-sm rounded-2xl p-4 text-white">
-                                                <p class="text-sm leading-relaxed">
-                                                    Perpustakaan modern dengan koleksi buku lengkap dan area belajar
-                                                    yang nyaman untuk mendukung pembelajaran.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
 
                                 <!-- Navigation Buttons -->
