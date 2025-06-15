@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['admin', 'guru', 'siswa'])->default('siswa');
+            // $table->enum('role', ['admin', 'guru', 'siswa'])->default('siswa');
             $table->string('avatar')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('id_ptk')->nullable()->constrained('ptks', 'id_ptk')->nullOnDelete();

@@ -144,12 +144,17 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'delete_chats']);
 
 
-        // Create roles and assign permissions
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo(Permission::all());
 
-        $guruRole = Role::create(['name' => 'guru']);
-        $guruRole->givePermissionTo([
+        // Create roles and assign permissions
+        //  $adminRole = Role::create(['name' => 'admin']);
+        // $adminRole->givePermissionTo(Permission::all());
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $adminRole->syncPermissions(Permission::all());
+
+        //  $guruRole = Role::create(['name' => 'guru']);
+        // $guruRole->givePermissionTo([
+        $guruRole = Role::firstOrCreate(['name' => 'guru']);
+        $guruRole->syncPermissions([
             'view_siswas',
             'view_kelas',
             'view_jurusans',
@@ -158,8 +163,10 @@ class PermissionSeeder extends Seeder
             'view_fasilitas',
         ]);
 
-        $siswaRole = Role::create(['name' => 'siswa']);
-        $siswaRole->givePermissionTo([
+        //  $siswaRole = Role::create(['name' => 'siswa']);
+        // $siswaRole->givePermissionTo([
+        $siswaRole = Role::firstOrCreate(['name' => 'siswa']);
+        $siswaRole->syncPermissions([
             'view_beritas',
             'view_ekstrakurikulers',
             'view_fasilitas',

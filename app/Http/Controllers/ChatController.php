@@ -90,8 +90,8 @@ class ChatController extends Controller
                         $context .= "  Total: Rp " . number_format($konten['total'], 0, ',', '.') . "\n";
                     } else {
                         if (is_array($info->konten)) {
-                            foreach ($info->konten as $item) {
-                                $context .= "  " . strip_tags($item) . "\n";
+                            foreach ($info->konten as $key => $value) {
+                                $context .= "  {$key}: {$value}\n";
                             }
                         } else {
                             $context .= "  " . strip_tags($info->konten) . "\n";
@@ -313,7 +313,11 @@ class ChatController extends Controller
                 "User: 'kapan pendaftaran ppdb?'\n" .
                 "Assistant: 'Pendaftaran PPDB dibuka dalam beberapa gelombang. Gelombang 1 mulai [tanggal] sampai [tanggal], Gelombang 2 [tanggal] sampai [tanggal]. Buruan daftar ya, kuotanya terbatas! 😄'\n\n" .
                 "User: 'syarat pendaftaran ppdb apa aja?'\n" .
-                "Assistant: 'Syarat pendaftaran PPDB antara lain [sebutkan syarat-syarat utama]. Jangan lupa siapkan semua berkasnya ya! Ada yang mau ditanyain lagi? 😊'\n\n" .
+                "Assistant: 'Syarat pendaftaran PPDB yang perlu disiapkan:\n" .
+                "- Fotokopi KK: 1 Lembar\n" .
+                "- Pas Foto 4x6: 1 Lembar\n" .
+                "- Akte Kelahiran: 5 Lembar\n\n" .
+                "Jangan lupa siapkan semua berkasnya ya! Ada yang mau ditanyain lagi? 😊'\n\n" .
                 "User: 'makasih min'\n" .
                 "Assistant: 'Sama-sama! Senang bisa bantu 😄'\n\n" .
                 "RIWAYAT PERCAKAPAN:\n" . $chatContext . 
