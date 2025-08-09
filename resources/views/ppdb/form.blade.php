@@ -237,7 +237,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="foto" class="hidden @error('foto') border-red-500 @enderror">
                     </label>
                     @error('foto')
@@ -253,7 +253,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="ijazah" class="hidden @error('ijazah') border-red-500 @enderror">
                     </label>
                     @error('ijazah')
@@ -269,7 +269,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="skhun" class="hidden @error('skhun') border-red-500 @enderror">
                     </label>
                     @error('skhun')
@@ -285,7 +285,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="kartu_keluarga"
                             class="hidden @error('kartu_keluarga') border-red-500 @enderror">
                     </label>
@@ -302,7 +302,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="akta_kelahiran"
                             class="hidden @error('akta_kelahiran') border-red-500 @enderror">
                     </label>
@@ -319,7 +319,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="surat_prestasi"
                             class="hidden @error('surat_prestasi') border-red-500 @enderror">
                     </label>
@@ -336,7 +336,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
                         </svg>
-                        <span class="mt-2 text-base leading-normal">Pilih file</span>
+                        <span class="mt-2 text-base leading-normal" data-default-text="Pilih file">Pilih file</span>
                         <input type="file" name="surat_tidak_mampu"
                             class="hidden @error('surat_tidak_mampu') border-red-500 @enderror">
                     </label>
@@ -351,4 +351,25 @@
             </div>
         </form>
     </div>
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const fileInputs = document.querySelectorAll('input[type="file"]');
+
+                fileInputs.forEach(input => {
+                    input.addEventListener('change', function(e) {
+                        const label = e.target.closest('label');
+                        const span = label.querySelector('span');
+                        const defaultText = span.getAttribute('data-default-text') || 'Pilih file';
+
+                        if (e.target.files.length > 0) {
+                            span.textContent = e.target.files[0].name;
+                        } else {
+                            span.textContent = defaultText;
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection
